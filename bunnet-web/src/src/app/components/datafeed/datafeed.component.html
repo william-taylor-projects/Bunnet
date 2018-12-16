@@ -1,0 +1,30 @@
+<mat-tab-group color='accent' backgroundColor='primary' style='padding: 8px 8px 8px 8px' mat-stretch-tabs headerPosition="below">
+    <mat-tab label="Common">
+        <ng-template matTabContent>
+            <ag-grid-angular style="width: 100%; height: 645px;" class="ag-theme-material" [rowData]="rowData" [pagination]='true' [enableSorting]="true" pageSizeOptions='[5,10,20]'
+                [enableFilter]="true" [enableColResize]="true" [columnDefs]="columnDefs">
+            </ag-grid-angular>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Lexor" disabled='disableSystemTab("lexor")'>
+            <ng-template matTabContent>
+                    <ag-grid-angular style="width: 100%; height: 675px;" class="ag-theme-material" [rowData]="rowData" [pagination]='true' [enableSorting]="true"
+                        [enableFilter]="true" [enableColResize]="true" [columnDefs]="columnDefs">
+                    </ag-grid-angular>
+                </ng-template>
+    </mat-tab>
+    <mat-tab label="Aqua" disabled='disableSystemTab("aqua")'>
+            <ng-template matTabContent>
+                    <ag-grid-angular style="width: 100%; height: 675px;" class="ag-theme-material" [rowData]="rowData" [pagination]='true' [enableSorting]="true"
+                        [enableFilter]="true" [enableColResize]="true" [columnDefs]="columnDefs">
+                    </ag-grid-angular>
+                </ng-template>
+    </mat-tab>
+    <mat-tab label="Gim" disabled='disableSystemTab("gim")'>
+            <ng-template matTabContent>
+                    <ag-grid-angular style="width: 100%; height: 675px;" class="ag-theme-material" [rowData]="rowData" [pagination]='true' [enableSorting]="true"
+                        [enableFilter]="true" [enableColResize]="true" [columnDefs]="columnDefs">
+                    </ag-grid-angular>
+                </ng-template>
+    </mat-tab>
+</mat-tab-group>

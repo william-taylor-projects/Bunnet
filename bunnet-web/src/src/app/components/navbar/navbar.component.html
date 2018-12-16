@@ -1,0 +1,84 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport="true" opened='true' [attr.role]="'navigation'" [mode]="'side'">
+        <mat-toolbar color="primary">
+            Menu
+        </mat-toolbar>
+
+        <mat-nav-list style='padding-top:0px;' dense>
+            <h3 matSubheader>Downstream Feeds</h3>
+            <a mat-list-item routerLink='/data/balances'>
+                <mat-icon>account_balance_wallet</mat-icon>
+                <span style='margin-left: 10px;'>Balances</span>
+            </a>
+            <a mat-list-item routerLink='/data/positions'>
+                <mat-icon>money</mat-icon>
+                <span style='margin-left: 10px;'>Positions</span>
+            </a>
+            <a mat-list-item routerLink='/data/accounts'>
+                <mat-icon>account_box</mat-icon>
+                <span style='margin-left: 10px;'>Accounts</span>
+            </a>
+            <a mat-list-item routerLink='/data/products'>
+                <mat-icon>description</mat-icon>
+                <span style='margin-left: 10px;'>Products</span>
+            </a>
+            <a mat-list-item routerLink='/data/prices'>
+                <mat-icon>euro_symbol</mat-icon>
+                <span style='margin-left: 10px;'>Prices</span>
+            </a>
+            <a mat-list-item routerLink='/data/rau'>
+                <mat-icon>account_balance</mat-icon>
+                <span style='margin-left: 10px;'>Rau</span>
+            </a>
+            <a mat-list-item routerLink='/data/ref'>
+                <mat-icon>data_usage</mat-icon>
+                <span style='margin-left: 10px;'>Ref</span>
+            </a>
+            <a mat-list-item routerLink='/data/fx' [class.disabled]='true'>
+                <mat-icon>attach_money</mat-icon>
+                <span style='margin-left: 10px;'>Fx</span>
+            </a>
+            <h3 matSubheader>Developer Feeds</h3>
+            <a mat-list-item routerLink='/overview'>
+                <mat-icon>dashboard</mat-icon>
+                <span style='margin-left: 10px;'>Database</span>
+            </a>
+            <a mat-list-item routerLink='/triggers'>
+                <mat-icon>touch_app</mat-icon>
+                <span style='margin-left: 10px;'>Rejects</span>
+            </a>
+            <a mat-list-item routerLink='/health'>
+                <mat-icon>pie_chart</mat-icon>
+                <span style='margin-left: 10px;'>Jobs</span>
+            </a>
+            <!--
+            <a mat-list-item routerLink='/overview'>
+                <mat-icon>dashboard</mat-icon>
+                <span style='margin-left: 10px;'>Overview</span>
+            </a>
+            <a mat-list-item routerLink='/triggers'>
+                <mat-icon>touch_app</mat-icon>
+                <span style='margin-left: 10px;'>Triggers</span>
+            </a>
+            <a mat-list-item routerLink='/health'>
+                <mat-icon>pie_chart</mat-icon>
+                <span style='margin-left: 10px;'>Health</span>
+            </a>
+            <mat-divider></mat-divider>
+            
+            <mat-divider></mat-divider>
+            -->
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar color="primary">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            </button>
+            <span style='margin-left: 10px;'>Bunnet</span>
+            <span class="spacer"></span>
+            <img class='ms-logo' src='assets/logo.png' />
+        </mat-toolbar>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

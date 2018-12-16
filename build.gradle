@@ -1,0 +1,46 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+bootJar {
+    baseName = 'bunnet'
+    version =  '0.0.1'
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+sourceSets.main.java.srcDirs = ['bunnet-server/main/java']
+sourceSets.main.resources.srcDirs = ['bunnet-server/main/resources']
+
+sourceSets.test.java.srcDirs = ['bunnet-server/test/java']
+sourceSets.test.resources.srcDirs = ['bunnet-server/test/resources']
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web:2.0.5.RELEASE')
+    compile('org.ehcache:ehcache:3.5.2')
+
+    compile('org.apache.commons:commons-lang3')
+    compile('org.rocksdb:rocksdbjni:5.5.1')
+    compile('org.slf4j:slf4j-api')
+
+    // JUnit + Mockito
+    testCompile("junit:junit")
+    testCompile("org.mockito:mockito-core:2.+")
+}
