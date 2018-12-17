@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class NotFoundErrorController implements ErrorController {
+public class BasicErrorController implements ErrorController {
     private static final String PATH = "/error";
 
     @Override
