@@ -1,7 +1,6 @@
 package com.ms.bunnet.config;
 
 import com.ms.bunnet.watcher.DirectoryWatcher;
-import com.ms.bunnet.watcher.DatabaseWatcher;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
@@ -37,30 +36,19 @@ public class Config {
                 .newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(10)));
     }
 
-    @Bean(name="RocksDBCache")
-    public Cache<String, String> rocksDBCache(@Autowired CacheManager manager) {
-        return manager.createCache("RocksDBCache", CacheConfigurationBuilder
-                .newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(10)));
-    }
-
     @Bean
     public DirectoryWatcher directoryWatcher() {
         return new DirectoryWatcher();
     }
 
-    @Bean()
-    public DatabaseWatcher rocksDBWatcher() {
-        return new DatabaseWatcher();
+    @Bean
+    public List<Runnable> backgroundRunnables() {
+        return Arrays.asList(directoryWatcher());
     }
 
     @Bean
-    public List<Runnable> cacheWatchers() {
-        return Arrays.asList(directoryWatcher(), rocksDBWatcher());
-    }
-
-    @Bean
-    public CommandLineRunner schedulingRunner(TaskExecutor executor) {
-        return args -> cacheWatchers().forEach(w -> executor.execute(w));
+    public CommandLineRunner backgroundTasks(TaskExecutor executor) {
+        return args -> backgroundRunnables().forEach(w -> executor.execute(w));
     }
 
     @Bean

@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
     for debugging reasons
  */
 @RestController
-public class CacheController {
+public class BasicCacheController {
     @Autowired()
     @Qualifier("DirectoryCache")
     private Cache<String, String> cache;
