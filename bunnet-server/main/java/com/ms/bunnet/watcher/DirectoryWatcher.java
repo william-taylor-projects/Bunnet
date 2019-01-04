@@ -1,5 +1,8 @@
 package com.ms.bunnet.watcher;
 
+import com.ms.bunnet.domain.FileData;
+import com.ms.bunnet.domain.FileKey;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ehcache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -19,7 +23,7 @@ public class DirectoryWatcher implements Runnable {
 
     @Autowired()
     @Qualifier("DirectoryCache")
-    private Cache<String, String> cache;
+    private Cache<FileKey, FileData> cache;
 
     @Autowired
     private WatchService watchService;
@@ -49,8 +53,8 @@ public class DirectoryWatcher implements Runnable {
     private void populateCache() {
         try {
             Files.list(Paths.get(watcherPath))
-                    .map(p -> p.getFileName().toString())
-                    .forEach(this::insertFile);
+                    .map(p -> Pair.of(StandardWatchEventKinds.ENTRY_CREATE, p.getFileName().toString()))
+                    .forEach(this::handleFileEvent);
         } catch(IOException e) {
             logger.error(e.getMessage(), e);
         }
@@ -60,12 +64,12 @@ public class DirectoryWatcher implements Runnable {
         try {
             WatchKey key;
             while ((key = watchService.take()) != null) {
-                // TODO: Deal with file events rather than just adding the file
                 key.pollEvents().parallelStream()
-                        .map(e -> e.context().toString())
-                        .filter(f -> !f.endsWith(".swp"))
+                        .filter(e -> !e.kind().equals(StandardWatchEventKinds.OVERFLOW))
+                        .map(e -> Pair.of((WatchEvent.Kind<Path>)e.kind(), e.context().toString()))
+                        .filter(f -> !f.getRight().endsWith(".swp"))
                         .distinct()
-                        .forEach(this::insertFile);
+                        .forEach(this::handleFileEvent);
                 key.reset();
             }
         } catch(InterruptedException e) {
@@ -73,12 +77,24 @@ public class DirectoryWatcher implements Runnable {
         }
     }
 
-    private void insertFile(String filename) {
-        logger.info("Received events for this file " + filename + " loading into the cache");
-        try {
-            cache.put(filename, new String(Files.readAllBytes(Paths.get(watcherPath, filename))));
-        } catch(IOException e) {
-            logger.error(e.getMessage(), e);
+    private void handleFileEvent(Pair<WatchEvent.Kind<Path>, String> eventPair) {
+        WatchEvent.Kind<Path> event = eventPair.getLeft();
+        String filename = eventPair.getRight();
+        FileKey key = new FileKey(filename);
+
+        if(event.equals(StandardWatchEventKinds.ENTRY_DELETE) && cache.containsKey(key)) {
+            logger.info("File deleted " + filename + " removing from cache!");
+            // No need for removal all, filenames will be unique
+            cache.remove(key);
+        } else {
+            try {
+                Path fullFilePath = Paths.get(watcherPath, filename);
+                logger.info("File created or update " + key.getName() + " adding to the cache!");
+                BasicFileAttributes attributes = Files.readAttributes(fullFilePath, BasicFileAttributes.class);
+                cache.put(new FileKey(filename, attributes), new FileData(Files.readAllBytes(fullFilePath)));
+            } catch(IOException e) {
+                logger.error(e.getMessage(), e);
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatCardModule } from '@angular/material/card';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
@@ -46,9 +47,10 @@ export const imports = [
     MatGridListModule,
     MatIconModule,
     MatListModule,
+    MatCardModule,
     RouterModule.forRoot(routes),
     StoreModule.forRoot({
-        
+
     }),
     StoreDevtoolsModule.instrument()
 ]

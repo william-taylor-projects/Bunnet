@@ -1,10 +1,12 @@
 package com.ms.bunnet.controller;
 
-import org.apache.commons.lang3.tuple.Pair;
+import com.ms.bunnet.domain.FileData;
+import com.ms.bunnet.domain.FileKey;
 import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,15 +18,18 @@ import java.util.stream.StreamSupport;
     for debugging reasons
  */
 @RestController
-public class BasicCacheController {
+public class CacheController {
     @Autowired()
     @Qualifier("DirectoryCache")
-    private Cache<String, String> cache;
+    private Cache<FileKey, FileData> cache;
 
     @GetMapping("/files")
-    public List<Pair<String, String>> getFilenames() {
-        return StreamSupport.stream(cache.spliterator(), false)
-                .map(i -> Pair.of(i.getKey(), i.getValue()))
-                .collect(Collectors.toList());
+    public List<FileKey> getFiles() {
+        return StreamSupport.stream(cache.spliterator(), true).map(i -> i.getKey()).collect(Collectors.toList());
+    }
+
+    @GetMapping("/files/{fileKey}")
+    public FileData getFileData(@PathVariable(value="fileKey") String fileKey) {
+        return cache.get(new FileKey(fileKey));
     }
 }

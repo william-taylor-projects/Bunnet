@@ -1,5 +1,7 @@
 package com.ms.bunnet.config;
 
+import com.ms.bunnet.domain.FileData;
+import com.ms.bunnet.domain.FileKey;
 import com.ms.bunnet.watcher.DirectoryWatcher;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
@@ -31,9 +33,9 @@ public class Config {
     }
 
     @Bean(name="DirectoryCache")
-    public Cache<String, String> directoryCache(@Autowired CacheManager manager) {
+    public Cache<FileKey, FileData> directoryCache(@Autowired CacheManager manager) {
         return manager.createCache("DirectoryCache", CacheConfigurationBuilder
-                .newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(10)));
+                .newCacheConfigurationBuilder(FileKey.class, FileData.class, ResourcePoolsBuilder.heap(10)));
     }
 
     @Bean
