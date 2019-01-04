@@ -5,7 +5,11 @@
         </mat-toolbar>
 
         <mat-nav-list style='padding-top:0px;' dense>
-            <h3 matSubheader>Downstream Feeds</h3>
+            <h3 matSubheader>Feeds</h3>
+            <a mat-list-item routerLink='/data/ref'>
+                <mat-icon>data_usage</mat-icon>
+                <span style='margin-left: 10px;'>Reference</span>
+            </a>
             <a mat-list-item routerLink='/data/balances'>
                 <mat-icon>account_balance_wallet</mat-icon>
                 <span style='margin-left: 10px;'>Balances</span>
@@ -26,48 +30,31 @@
                 <mat-icon>euro_symbol</mat-icon>
                 <span style='margin-left: 10px;'>Prices</span>
             </a>
+            <a mat-list-item routerLink='/data/ref'>
+                <mat-icon>lock</mat-icon>
+                <span style='margin-left: 10px;'>B520</span>
+            </a>
             <a mat-list-item routerLink='/data/rau'>
                 <mat-icon>account_balance</mat-icon>
-                <span style='margin-left: 10px;'>Rau</span>
-            </a>
-            <a mat-list-item routerLink='/data/ref'>
-                <mat-icon>data_usage</mat-icon>
-                <span style='margin-left: 10px;'>Ref</span>
+                <span style='margin-left: 10px;'>RAU</span>
             </a>
             <a mat-list-item routerLink='/data/fx' [class.disabled]='true'>
                 <mat-icon>attach_money</mat-icon>
                 <span style='margin-left: 10px;'>Fx</span>
             </a>
-            <h3 matSubheader>Developer Feeds</h3>
-            <a mat-list-item routerLink='/overview'>
-                <mat-icon>dashboard</mat-icon>
-                <span style='margin-left: 10px;'>Database</span>
+            <h3 matSubheader>Misc</h3>
+            <a mat-list-item routerLink='/data/balances'>
+                <mat-icon>contact_support</mat-icon>
+                <span style='margin-left: 10px;'>Feedback</span>
             </a>
-            <a mat-list-item routerLink='/triggers'>
-                <mat-icon>touch_app</mat-icon>
-                <span style='margin-left: 10px;'>Rejects</span>
+            <a mat-list-item routerLink='/data/positions'>
+                <mat-icon>help</mat-icon>
+                <span style='margin-left: 10px;'>Support</span>
             </a>
-            <a mat-list-item routerLink='/health'>
-                <mat-icon>pie_chart</mat-icon>
-                <span style='margin-left: 10px;'>Jobs</span>
+            <a mat-list-item routerLink='/data/positions'>
+                <mat-icon>info</mat-icon>
+                <span style='margin-left: 10px;'>About</span>
             </a>
-            <!--
-            <a mat-list-item routerLink='/overview'>
-                <mat-icon>dashboard</mat-icon>
-                <span style='margin-left: 10px;'>Overview</span>
-            </a>
-            <a mat-list-item routerLink='/triggers'>
-                <mat-icon>touch_app</mat-icon>
-                <span style='margin-left: 10px;'>Triggers</span>
-            </a>
-            <a mat-list-item routerLink='/health'>
-                <mat-icon>pie_chart</mat-icon>
-                <span style='margin-left: 10px;'>Health</span>
-            </a>
-            <mat-divider></mat-divider>
-            
-            <mat-divider></mat-divider>
-            -->
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
