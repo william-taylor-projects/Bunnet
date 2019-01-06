@@ -29,12 +29,15 @@ export class DataFeedComponent implements IDatasource {
             { headerName: 'Column 6', field: 'col6' },
         ];
 
-        this.gridOptions.rowData = new Array(1000000).fill(0).map(i => this.newRow());
+        this.gridOptions.rowData = new Array(1000).fill(0).map(i => this.newRow());
         this.gridOptions.enableServerSideFilter = true;
         this.gridOptions.enableServerSideSorting = true;
         this.gridOptions.rowModelType = 'infinite';
         this.gridOptions.datasource = this;
-        this.connect();
+        this.gridOptions.onGridReady = (params) => {
+            params.api.sizeColumnsToFit();
+        }
+        //this.connect();
 
         router.events.subscribe(val => {
             if (val instanceof NavigationEnd) {

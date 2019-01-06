@@ -3,9 +3,11 @@
         <mat-toolbar color="primary">
             Menu
         </mat-toolbar>
-
-        <mat-nav-list style='padding-top:0px;' dense>
-            <h3 matSubheader>Feeds</h3>
+        <!-- 
+            Use dense + style='padding-top:0px;' when we have more feeds
+            Use <h3 matSubheader>Feeds</h3> for additional sub sections
+        -->
+        <mat-nav-list> 
             <a mat-list-item routerLink='/data/ref'>
                 <mat-icon>data_usage</mat-icon>
                 <span style='margin-left: 10px;'>Reference</span>
@@ -40,20 +42,7 @@
             </a>
             <a mat-list-item routerLink='/data/fx' [class.disabled]='true'>
                 <mat-icon>attach_money</mat-icon>
-                <span style='margin-left: 10px;'>Fx</span>
-            </a>
-            <h3 matSubheader>Misc</h3>
-            <a mat-list-item routerLink='/data/balances'>
-                <mat-icon>contact_support</mat-icon>
-                <span style='margin-left: 10px;'>Feedback</span>
-            </a>
-            <a mat-list-item routerLink='/data/positions'>
-                <mat-icon>help</mat-icon>
-                <span style='margin-left: 10px;'>Support</span>
-            </a>
-            <a mat-list-item routerLink='/data/positions'>
-                <mat-icon>info</mat-icon>
-                <span style='margin-left: 10px;'>About</span>
+                <span style='margin-left: 10px;'>FX</span>
             </a>
         </mat-nav-list>
     </mat-sidenav>
