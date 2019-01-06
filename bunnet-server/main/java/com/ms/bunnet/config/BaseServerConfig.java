@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-public class Config {
+public class BaseServerConfig {
     @Bean
     public CacheManager cacheManager() {
         CacheManager manager = CacheManagerBuilder.newCacheManagerBuilder().build();
@@ -49,7 +49,8 @@ public class Config {
     }
 
     @Bean
-    public CommandLineRunner backgroundTasks(TaskExecutor executor) {
+    public CommandLineRunner backgroundTasks() {
+        TaskExecutor executor = taskExecutor();
         return args -> backgroundRunnables().forEach(w -> executor.execute(w));
     }
 

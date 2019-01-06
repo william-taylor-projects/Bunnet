@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FeedService } from '../../includes/all.services'
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { GridOptions, IDatasource, IGetRowsParams } from "ag-grid-community";
+import { Stomp } from '@stomp/stompjs';
+import * as SockJS from 'sockjs-client';
 
 @Component({
     selector: 'datafeed',
@@ -11,6 +13,7 @@ import { GridOptions, IDatasource, IGetRowsParams } from "ag-grid-community";
 export class DataFeedComponent implements IDatasource {
     private activeFeed: string;
     private gridOptions: GridOptions;
+    private stompClient = null;
 
     constructor(private route: ActivatedRoute, private feeds: FeedService, router: Router) {
         this.gridOptions = <GridOptions>{};
@@ -31,6 +34,7 @@ export class DataFeedComponent implements IDatasource {
         this.gridOptions.enableServerSideSorting = true;
         this.gridOptions.rowModelType = 'infinite';
         this.gridOptions.datasource = this;
+        this.connect();
 
         router.events.subscribe(val => {
             if (val instanceof NavigationEnd) {
@@ -46,13 +50,11 @@ export class DataFeedComponent implements IDatasource {
         let data = this.gridOptions.rowData;
         params.sortModel.forEach(s => {
             data = data.sort((a, b) => a[s.colId] - b[s.colId]);
-            if(s.sort !== 'desc') {
+            if (s.sort !== 'desc') {
                 data = data.reverse();
             }
         })
-            
-        console.log(params.sortModel);
-        console.log(params.filterModel);
+
         params.successCallback(data.slice(params.startRow, params.endRow));
     }
 
@@ -73,5 +75,25 @@ export class DataFeedComponent implements IDatasource {
 
     disableSystemTab(system: string) {
         return !this.feeds.systemFeedAvailable(system);
+    }
+
+    connect() {
+        const socket = new SockJS('http://localhost:8080/socket');
+        this.stompClient = Stomp.over(socket);
+
+        this.stompClient.connect({}, frame => {
+            this.stompClient.subscribe('/response/filenames', data => {
+                const filenames = JSON.parse(data.body);
+                console.log(filenames);
+            });
+        });        
+    }
+
+    disconnect() {
+        if (this.stompClient != null) {
+            this.stompClient.disconnect();
+        }
+
+        console.log('Disconnected!');
     }
 }

@@ -18,12 +18,12 @@ import java.util.stream.StreamSupport;
     for debugging reasons
  */
 @RestController
-public class CacheController {
+public class BasicCacheController {
     @Autowired()
     @Qualifier("DirectoryCache")
     private Cache<FileKey, FileData> cache;
 
-    @GetMapping("/files")
+    @GetMapping("/files/names")
     public List<FileKey> getFiles() {
         return StreamSupport.stream(cache.spliterator(), true).map(i -> i.getKey()).collect(Collectors.toList());
     }
